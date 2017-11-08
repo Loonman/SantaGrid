@@ -1,4 +1,4 @@
 ssh*
-output.txt
-password.txt
 *.csv
+*.out
+*.txt
