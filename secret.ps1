@@ -73,7 +73,7 @@ function Main()
     $rows = GetRandomRows
     MakePairings $rows
     $rows | Export-Csv $LogFile
-    Add-Content $LogFile Get-Date
+    Add-Content $LogFile $(Get-Date)
     $cred = Get-Credential
     if(!$RunLocally)
     {
