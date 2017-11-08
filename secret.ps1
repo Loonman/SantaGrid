@@ -16,7 +16,7 @@ if (!(Test-Path $signups))
     return
 }
 
-function makePairings ([System.Collections.ArrayList]$attendees) 
+function MakePairings ([System.Collections.ArrayList]$attendees) 
 {
     $first = $attendees[0]
     $last = $attendees[-1]
@@ -30,10 +30,6 @@ function makePairings ([System.Collections.ArrayList]$attendees)
 
 function sendOutEmails([System.Collections.ArrayList]$matches, $credentials) 
 {
-    #$username = cat .\user.txt
-    #$password = cat .\password.txt | ConvertTo-SecureString
-    #$cred = new-object -typename System.Management.Automation.PSCredential `
-    #        -ArgumentList $username, $password
     foreach($entry in $matches) 
     {
         Send-MailMessage -From $SendAddr `
@@ -68,7 +64,7 @@ function CleanupWorkspace()
 function Main()
 {
     $rows = GetRandomRows
-    makePairings $rows
+    MakePairings $rows
     $rows | Export-Csv $LogFile
     $cred = Get-Credential
     sendOutEmails $rows $cred
