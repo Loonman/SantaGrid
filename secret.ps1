@@ -68,11 +68,6 @@ function GetRandomRows()
     return $rows
 }
 
-function CleanupWorkspace()
-{
-    clear-content output.txt
-}
-
 function Main()
 {
     $rows = GetRandomRows
