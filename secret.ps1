@@ -8,12 +8,24 @@ This script will take a .csv file containing the columns 'name' and 'email', an 
 .EXAMPLE
 ./SecretSanta.ps1 -Signups signups.csv -LogFile out.log -SendAddr SecretSanta@gmail.com
 #>
-param($Signups, $LogFile, $SendAddr)
-
-if (!(Test-Path $signups))
-{
-    write-host "You must supply a signups of signups."
-    return
+Param(
+    [Parameter(Mandatory=$True, Position=0)]
+    $Signups, 
+    [Parameter(Mandatory=$True, Position=1)]
+    $SendAddr, 
+    [Parameter(Mandatory=$True, Position=2)]
+    $LogFile, 
+    [Switch]$RunLocally
+)
+try {
+    if (!(Test-Path $Signups))
+    {
+        Write-Error "You must supply a valid path to a csv containing signups."
+        exit
+    }
+} catch {
+    Write-Error "You must supply a valid path to a csv containing signups."
+    exit
 }
 
 function MakePairings ([System.Collections.ArrayList]$attendees) 
@@ -45,14 +57,14 @@ function sendOutEmails([System.Collections.ArrayList]$matches, $credentials)
 
 function GetRandomRows()
 {
-    $rows = new-object System.Collections.ArrayList
-    Import-CSV $signups | foreach-object {
+    $rows = New-Object System.Collections.ArrayList
+    Import-CSV $signups | ForEach-Object {
         $hash = (@{Name=$_.name;email=$_.email;match=""})
-        $row = new-object psobject -Property $hash
+        $row = New-Object PSObject -Property $hash
         $rows.add($row) > $null
     }
 
-    $rows = $rows | Sort-Object {get-random}
+    $rows = $rows | Sort-Object { Get-Random }
     return $rows
 }
 
@@ -66,8 +78,12 @@ function Main()
     $rows = GetRandomRows
     MakePairings $rows
     $rows | Export-Csv $LogFile
+    Add-Content $LogFile Get-Date
     $cred = Get-Credential
-    sendOutEmails $rows $cred
+    if(!$RunLocally)
+    {
+        sendOutEmails $rows $cred
+    }
 }
 
 Main
