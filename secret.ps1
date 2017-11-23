@@ -6,7 +6,7 @@ This is a simple powershell script for creating and sending secret santa pairing
 This script will take a .csv file containing the columns 'name' and 'email', an output logfile, and an email address to send from. Then it will randomly pair all attendees. The algorithm used guarantees that no one will receive their own name and since all pairings happen at once guarntees random pairings.
 
 .EXAMPLE
-./SecretSanta.ps1 -Signups signups.csv -LogFile out.log -SendAddr SecretSanta@gmail.com
+./Secret.ps1 -Signups signups.csv -LogFile out.log -SendAddr SecretSanta@gmail.com
 #>
 Param(
     [Parameter(Mandatory=$True, Position=0)]
