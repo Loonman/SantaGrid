@@ -74,9 +74,9 @@ function Main()
     MakePairings $rows
     $rows | Export-Csv $LogFile
     Add-Content $LogFile $(Get-Date)
-    $cred = Get-Credential
     if(!$RunLocally)
     {
+        $cred = Get-Credential
         sendOutEmails $rows $cred
     }
 }
